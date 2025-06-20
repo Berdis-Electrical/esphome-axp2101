@@ -56,89 +56,49 @@ void AXP2101Component::setup()
     ESP_LOGCONFIG(TAG, "->  getSysPowerDownVoltage:%u", vol);
 
 
-    // DC1 IMAX=2A
-    // 1500~3400mV,100mV/step,20steps
-    PMU.setDC1Voltage(3300);
-    ESP_LOGCONFIG(TAG, "DC1  : %s   Voltage:%u mV",  PMU.isEnableDC1()  ? "+" : "-", PMU.getDC1Voltage());
-
-    // DC2 IMAX=2A
-    // 500~1200mV  10mV/step,71steps
-    // 1220~1540mV 20mV/step,17steps
-    PMU.setDC2Voltage(1000);
-    ESP_LOGCONFIG(TAG, "DC2  : %s   Voltage:%u mV",  PMU.isEnableDC2()  ? "+" : "-", PMU.getDC2Voltage());
-
-    // DC3 IMAX = 2A
-    // 500~1200mV,10mV/step,71steps
-    // 1220~1540mV,20mV/step,17steps
-    // 1600~3400mV,100mV/step,19steps
-    PMU.setDC3Voltage(3300);
-    ESP_LOGCONFIG(TAG, "DC3  : %s   Voltage:%u mV",  PMU.isEnableDC3()  ? "+" : "-", PMU.getDC3Voltage());
-
-    // DCDC4 IMAX=1.5A
-    // 500~1200mV,10mV/step,71steps
-    // 1220~1840mV,20mV/step,32steps
-    PMU.setDC4Voltage(1000);
-    ESP_LOGCONFIG(TAG, "DC4  : %s   Voltage:%u mV",  PMU.isEnableDC4()  ? "+" : "-", PMU.getDC4Voltage());
-
-    // DC5 IMAX=2A
-    // 1200mV
-    // 1400~3700mV,100mV/step,24steps
-    PMU.setDC5Voltage(3300);
-    ESP_LOGCONFIG(TAG, "DC5  : %s   Voltage:%u mV",  PMU.isEnableDC5()  ? "+" : "-", PMU.getDC5Voltage());
-
-    //ALDO1 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
+    //! RTC VBAT , Don't change
     PMU.setALDO1Voltage(3300);
 
-    //ALDO2 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
+    //! TFT BACKLIGHT VDD , Don't change
     PMU.setALDO2Voltage(3300);
 
-    //ALDO3 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
-    // PMU.setALDO3Voltage(3300);
+    //!Screen touch VDD , Don't change
+    PMU.setALDO3Voltage(3300);
 
-    //ALDO4 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
+    //! Radio VDD , Don't change
     PMU.setALDO4Voltage(3300);
 
-    //BLDO1 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
-    PMU.setBLDO1Voltage(3300);
-
-    //BLDO2 IMAX=300mA
-    //500~3500mV, 100mV/step,31steps
+    //!DRV2605 enable
     PMU.setBLDO2Voltage(3300);
 
-    //CPUSLDO IMAX=30mA
-    //500~1400mV,50mV/step,19steps
-    PMU.setCPUSLDOVoltage(1000);
+    
+    //! GPS Power
+    PMU.setBLDO1Voltage(3300);
 
-    //DLDO1 IMAX=300mA
-    //500~3400mV, 100mV/step,29steps
-    // PMU.setDLDO1Voltage(3300);
+    PMU.setDC3Voltage(3300);
+    PMU.enableDC3();    //Earlier versions use DC3 (without BOOT button and RST)
 
-    //DLDO2 IMAX=300mA
-    //500~1400mV, 50mV/step,2steps
-    // PMU.setDLDO2Voltage(3300);
-
-
-    // PMU.enableDC1();
-    PMU.enableDC2();
-    PMU.enableDC3();
-    PMU.enableDC4();
-    PMU.enableDC5();
-    PMU.enableALDO1();
-    PMU.enableALDO2();
-    // PMU.enableALDO3(); // This is the speaker
-    PMU.enableALDO4();
-    PMU.enableBLDO1();
-    PMU.enableBLDO2();
-    PMU.enableCPUSLDO();
-    // PMU.enableDLDO1(); // This is the vibration motor
-    // PMU.enableDLDO2();
+    //! No use
+    PMU.disableDC2();
+    // disableDC3();
+    PMU.disableDC4();
+    PMU.disableDC5();
+    // disableBLDO1();
+    PMU.disableCPUSLDO();
+    PMU.disableDLDO1();
+    PMU.disableDLDO2();
 
 
+
+    PMU.enableALDO1();  //! RTC VBAT
+    PMU.enableALDO2();  //! TFT BACKLIGHT   VDD
+    PMU.enableALDO3();  //! Screen touch VDD
+    PMU.enableALDO4();  //! Radio VDD
+    PMU.enableBLDO2();  //! drv2605 enable
+    PMU.enableBLDO1();  //! GPS enable  (The version with BOOT button and RST on the back cover)
+    PMU.enableDLDO1();  //! Speaker 
+
+   
     ESP_LOGCONFIG(TAG, "DC1  : %s   Voltage:%u mV",  PMU.isEnableDC1()  ? "+" : "-", PMU.getDC1Voltage());
     ESP_LOGCONFIG(TAG, "DC2  : %s   Voltage:%u mV",  PMU.isEnableDC2()  ? "+" : "-", PMU.getDC2Voltage());
     ESP_LOGCONFIG(TAG, "DC3  : %s   Voltage:%u mV",  PMU.isEnableDC3()  ? "+" : "-", PMU.getDC3Voltage());
@@ -266,21 +226,22 @@ void AXP2101Component::setup()
     // Set the precharge charging current
     PMU.setPrechargeCurr(XPOWERS_AXP2101_PRECHARGE_50MA);
     // Set constant current charge current limit
-    PMU.setChargerConstantCurr(XPOWERS_AXP2101_CHG_CUR_200MA);
+    PMU.setChargerConstantCurr(XPOWERS_AXP2101_CHG_CUR_300MA);
     // Set stop charging termination current
     PMU.setChargerTerminationCurr(XPOWERS_AXP2101_CHG_ITERM_25MA);
 
     // Set charge cut-off voltage
-    PMU.setChargeTargetVoltage(XPOWERS_AXP2101_CHG_VOL_4V1);
+    PMU.setChargeTargetVoltage(XPOWERS_AXP2101_CHG_VOL_4V35);
 
+    /*
     // Set the watchdog trigger event type
     PMU.setWatchdogConfig(XPOWERS_AXP2101_WDT_IRQ_TO_PIN);
     // Set watchdog timeout
     PMU.setWatchdogTimeout(XPOWERS_AXP2101_WDT_TIMEOUT_4S);
     // Enable watchdog to trigger interrupt event
     PMU.enableWatchdog();
-
-    // PMU.disableWatchdog();
+    */
+    PMU.disableWatchdog();
 
     // Enable Button Battery charge
     PMU.enableButtonBatteryCharge();
