@@ -8,9 +8,8 @@ esp32:
     type: arduino
 
 external_components:
-  - source: github://stefanthoss/esphome-axp2101
+  - source: github://Berdis-Electrical/esphome-axp2101
     components: [ axp2101 ]
-
 # Enable logging
 logger:
 
