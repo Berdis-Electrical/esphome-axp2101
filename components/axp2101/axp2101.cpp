@@ -376,24 +376,7 @@ void AXP2101Component::UpdateBrightness()
     }
 
     ESP_LOGD(TAG, "Brightness=%f (Curr: %f)", brightness_, curr_brightness_);
-    curr_brightness_ = brightness_;
 
-    const uint8_t c_min = 7;
-    const uint8_t c_max = 12;
-    auto ubri = c_min + static_cast<uint8_t>(brightness_ * (c_max - c_min));
-
-    if (ubri > c_max)
-    {
-        ubri = c_max;
-    }
-    switch (this->model_) {
-      case AXP2101_M5CORE2:
-      {
-        uint8_t buf = Read8bit( 0x27 );
-        Write1Byte( 0x27 , ((buf & 0x80) | (ubri << 3)) );
-        break;
-      }
-    }
 }
 
 bool AXP2101Component::GetBatState()
