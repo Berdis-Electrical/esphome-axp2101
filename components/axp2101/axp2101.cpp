@@ -4,11 +4,11 @@
 #include <Esp.h>
 
 #ifndef CONFIG_PMU_SDA
-#define CONFIG_PMU_SDA 21
+#define CONFIG_PMU_SDA 39
 #endif
 
 #ifndef CONFIG_PMU_SCL
-#define CONFIG_PMU_SCL 22
+#define CONFIG_PMU_SCL 40
 #endif
 
 #ifndef CONFIG_PMU_IRQ
