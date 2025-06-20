@@ -12,7 +12,7 @@
 #endif
 
 #ifndef CONFIG_PMU_IRQ
-#define CONFIG_PMU_IRQ 35
+#define CONFIG_PMU_IRQ 16
 #endif
 
 bool  pmu_flag = 0;
