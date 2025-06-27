@@ -4,15 +4,15 @@
 #include <Esp.h>
 
 #ifndef CONFIG_PMU_SDA
-#define CONFIG_PMU_SDA 39
+#define CONFIG_PMU_SDA 10
 #endif
 
 #ifndef CONFIG_PMU_SCL
-#define CONFIG_PMU_SCL 40
+#define CONFIG_PMU_SCL 11
 #endif
 
 #ifndef CONFIG_PMU_IRQ
-#define CONFIG_PMU_IRQ 16
+#define CONFIG_PMU_IRQ 21
 #endif
 
 bool  pmu_flag = 0;
