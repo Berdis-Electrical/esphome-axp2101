@@ -248,6 +248,8 @@ void AXP2101Component::setup()
 
     // Set Button Battery charge voltage
     PMU.setButtonBatteryChargeVoltage(3300);
+
+    ESP_LOGI(TAG, "Battery connected? %s", PMU.isBatteryConnect() ? "YES" : "NO");
 }
 
 void AXP2101Component::dump_config() {
