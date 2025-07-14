@@ -30,6 +30,7 @@ enum AXP2101Model {
 #define CURRENT_630MA  (0b0110)
 #define CURRENT_700MA  (0b0111)
 
+
 class AXP2101Component : public PollingComponent, public i2c::I2CDevice {
 public:
   void set_batteryvoltage_sensor(sensor::Sensor *batteryvoltage_sensor) { batteryvoltage_sensor_ = batteryvoltage_sensor; }
